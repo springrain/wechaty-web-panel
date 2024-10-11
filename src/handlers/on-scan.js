@@ -66,8 +66,11 @@ async function onScan(qrcode, status) {
     }
     const qrImgUrl = [qrImgCallURL, encodeURIComponent(qrcode)].join('')
     console.log(qrImgUrl)
-    let content = await get({url:qrImgUrl})
-    console.log('发送二维码地址请求的返回值', content)
+    get({url:qrImgUrl}).then(res=>{
+      console.log('发送二维码地址请求的返回值', res)
+    }).catch(err=>{
+      console.log('发送二维码地址请求报错', err)
+    })
   } catch (e) {
     console.log('二维码推送报错', e)
   }

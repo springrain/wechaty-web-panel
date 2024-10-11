@@ -171,7 +171,7 @@ class OfficialOpenAi {
         sendParams.systemMessage = systemMessage;
       }
 
-      if(isFastGPT && variables) {
+      if(variables) {
         sendParams.variables = variables
       }
 

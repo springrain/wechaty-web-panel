@@ -161,7 +161,7 @@ async function dispatchAiBot({ bot, msg, name, id, uid, uname, roomId, userAlias
         break
       case 6:
         // ChatGPT-api
-        res = await getGptOfficialReply(msg, id, false)
+        res = await getGptOfficialReply(msg, id, false, { uid, uname, ualias: userAlias, roomId, roomName })
         replys = res
         break
       case 8:
@@ -206,7 +206,7 @@ async function dispatchSummerBot({ content, id, uid, uname, roomId, roomName, us
     switch (config.botType) {
       case 6:
         // ChatGPT-api
-        res = await getSimpleGptReply({content, uid: id, config, isFastGPT:false})
+        res = await getSimpleGptReply({content, uid: id, config, isFastGPT:false, variables: { uid, ualias: userAlias, uname, roomId, roomName }})
         replys = res
         break
       case 8:
