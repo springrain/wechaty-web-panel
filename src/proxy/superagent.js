@@ -166,12 +166,14 @@ async function callbackAibotApi(url, data, timeout = 60) {
   return res
 }
 export { req }
+export { get }
 export { txReq }
 export { aiBotReq }
 export { service }
 export { callbackAibotApi }
 export default {
   req,
+  get,
   txReq,
   aiBotReq,
   service,

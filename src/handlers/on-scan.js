@@ -1,6 +1,7 @@
 import Qrterminal from 'qrcode-terminal'
 import { throttle } from '../lib/index.js'
 import { setQrCode, getVerifyCode } from '../proxy/aibotk.js'
+import { get } from '../proxy/superagent.js'
 import { getAibotConfig } from "../db/aiDb.js";
 import { updatePuppetConfig } from "../db/puppetDb.js";
 import globalConfig from '../db/global.js'
@@ -23,6 +24,17 @@ function getQrcodeKey(qrcode) {
     globalConfig.setQrKey('')
   }
 }
+
+/**
+ * 通过配置获取二维码生成的回调地址
+ */
+let qrImgCallURL='https://api.qrserver.com/v1/create-qr-code/?data='
+if (process.env['QRIMGCALLURL']) {
+  console.log('使用环境变量中的 qrImgCallURL')
+  qrImgCallURL = process.env['QRIMGCALLURL']
+}
+
+
 /**
  * 扫描登录，显示二维码
  */
@@ -40,9 +52,10 @@ async function onScan(qrcode, status) {
       scanTime++
       throttle(setQrCode(qrcode, status), 15000)
     }
-
-    const qrImgUrl = ['https://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode)].join('')
+    const qrImgUrl = [qrImgCallURL, encodeURIComponent(qrcode)].join('')
     console.log(qrImgUrl)
+    let content = await get({url:qrImgUrl})
+    console.log('发送二维码地址请求的返回值', content)
   } catch (e) {
     console.log('二维码推送报错', e)
   }
